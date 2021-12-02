@@ -9,10 +9,10 @@ with open('data/day2-data.txt') as file:
         value = int(data[1])
         match command: 
             case 'up': 
-                y += value
-            case 'down':
                 y -= value
+            case 'down':
+                y += value
             case 'forward':
                 x += value
 
-print(-1*x*y)
+print(x*y)
