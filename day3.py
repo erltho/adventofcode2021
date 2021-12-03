@@ -12,8 +12,6 @@ i = 0
 with open('data/day3-data.txt') as file: 
     for line in file:
         for char in line:
-            print("character : " + str(char))
-            print("index: " + str(i)) 
             if (char == "1"):
                 tmp_byte_one[i] += 1
             if (char == "0" ):
@@ -34,12 +32,7 @@ for i in range(0, len(gamma)):
     else:
         epsilon[i] = 1
 
-print(gamma)
-print(epsilon)
-print(str(len(gamma)))
-
 gamma_value = int("".join(str(x) for x in gamma), 2)
 epsilon_value = int("".join(str(x) for x in epsilon), 2)
-print(gamma_value * epsilon_value)
 
-# print("tmp_byte_zero: " + str(tmp_byte_one) + "\n" + str(tmp_byte_zero))
+print("Solution: " + str(gamma_value * epsilon_value))
