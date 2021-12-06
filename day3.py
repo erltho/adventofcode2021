@@ -51,7 +51,6 @@ with open('data/day3-data.txt') as file:
             ox_gen.append(line.strip())
             c02_scrub.append(line.strip())
 
-# print(c02_scrub)
 # def iterate_over_list(list, most_or_least):
 #     for i in range(0, 12):
 #         line_index = 0
@@ -108,22 +107,7 @@ for i in range(0, len(gamma)):
             n -= 1
         else:
             li += 1
-#     for line in c02_scrub:
-#         if line[i] == '1':
-#             one += 1
-#         else:
-#             zero += 1
-#     if (one > zero):
-#         least_common_bit = '0'
-#     else:
-#         least_common_bit = '1'
-#     while c02_i < c02_n:
-#         element = c02_scrub[c02_i]
-#         if element[i] != least_common_bit:
-#             c02_scrub.remove(element)
-#             c02_n -= 1
-#         else:
-#             c02_i += 1
+
 for i2 in range(0, len(gamma)):
     li2 = 0
     n2 = len(c02_scrub)
@@ -155,4 +139,3 @@ print(c02_scrub)
 oxygen_value = int("".join(str(x) for x in ox_gen), 2)
 c02_scrubber = int("".join(str(x) for x in c02_scrub), 2)
 print("solution " + str(oxygen_value * c02_scrubber))
-# # print(oxygen_value)
