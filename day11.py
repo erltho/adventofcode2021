@@ -2,6 +2,8 @@
 import numpy as np
 
 raw_grid = []
+did_it_flash = {}
+
 with open('data/day11-data.txt') as file: 
     for line in file:
         row = list(line.strip())
@@ -9,12 +11,27 @@ with open('data/day11-data.txt') as file:
         
 grid = np.array(raw_grid).astype(int)
 
+def increase_grid(matrix):
+    for x in range(matrix.shape[0]):
+        for y in range(matrix.shape[1]): 
+            matrix[x,y] = matrix[x,y] + 1
+            did_it_flash[str([x,y])] = False
 
-did_it_flash = {}
-print(grid.shape)
+def flash(matrix):
+    while True:
+        for x in range(matrix.shape[0]):
+            for y in range(matrix.shape[1]):
+                if(matrix[x,y] > 9 and did_it_flash[str([x,y])] == False ):
+                    adj = adj_finder(matrix,[x,y])
+                    for elem in adj:
+                        matrix[elem] += 1
+                    did_it_flash[str([x,y])] = True
+        if evaluate_end_condition(matrix):
+            break
+    did_it_flash.clear
+
 def adj_finder(matrix, position):
     adj = []
-    
     for dx in range(-1, 2):
         for dy in range(-1, 2):
             rangeX = range(0, matrix.shape[0])  # X bounds
@@ -24,50 +41,14 @@ def adj_finder(matrix, position):
             
             if (newX in rangeX) and (newY in rangeY) and (dx, dy) != (0, 0):
                 adj.append((newX, newY))
-    
     return adj
-
-def increase_grid(matrix):
-    for x in range(matrix.shape[0]):
-        for y in range(matrix.shape[1]): 
-            matrix[x,y] = int(matrix[x,y]) + 1
-
-def flash(matrix):
-    for x in range(matrix.shape[0]):
-        for y in range(matrix.shape[1]):
-            key = [x,y]
-            did_it_flash[str(key)] = False
-            if(matrix[x,y] > 9):
-                did_it_flash[str(key)] = True
-                adj = adj_finder(matrix,[x,y])
-                for elem in adj:
-                    matrix[elem] += 1
-
-def control_flash(matrix):
-    while True:
-        for x in range(matrix.shape[0]):
-            for y in range(matrix.shape[1]):
-                key = [x,y]
-                if (did_it_flash[str(key)] == False and matrix[x,y] > 9):
-                    adj = adj_finder(matrix,[x,y])
-                    for elem in adj:
-                        matrix[elem] += 1
-                    did_it_flash[str(key)] = True
-        if evaluate_end_condition(matrix):
-            break
-    did_it_flash.clear()
 
 def evaluate_end_condition(matrix):
     for x in range(matrix.shape[0]):
         for y in range(matrix.shape[1]):
-            key = [x,y]
-            if (did_it_flash[str(key)] == False and matrix[x,y] > 9):
+            if (did_it_flash[str([x,y])] == False and matrix[x,y] > 9):
                 return False
     return True
-
-
-
-
 
 
 def reset_flashed(matrix):
@@ -85,7 +66,6 @@ def reset_flashed(matrix):
 #     for i in range(steps):
 #         increase_grid(matrix)
 #         flash(matrix)
-#         control_flash(matrix)
 #         flashed += reset_flashed(matrix)
 #     return flashed
 
@@ -101,10 +81,9 @@ def main(matrix):
         index += 1
         increase_grid(matrix)
         flash(matrix)
-        control_flash(matrix)
         flashes = reset_flashed(matrix)
         if flashes == grid_size:
-            print(index)
+            return index
             break
 
-main(grid)
+print(main(grid))
